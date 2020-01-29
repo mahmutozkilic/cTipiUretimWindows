@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+
+    <script src="../renderer.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <script>
+        require('popper.js');
+    </script>
+    <script>
+        require('bootstrap');
+    </script>
+    
+    <!-- <script>require('async')</script> -->
+    <link rel="stylesheet" href="../Content/css/smart_wizard.css" />
+    <link rel="stylesheet" href="../Content/css/smart_wizard_theme_arrows.css" />
+    <link rel="stylesheet" href="../Content/bootstrap-datepicker/css/bootstrap-datepicker.min.css" />
+    <script src="../Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../Content/bootstrap-datepicker/js/bootstrap-datepicker.tr.js"></script>
+    <script src="../Content/script/jquery.smartWizard.js"></script>
+    <script src="../Content/script/validator.min.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .main {
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+
+        .datepicker-days {
+            display: block !important;
+        }
+
+        .wrapper {
+            /* display: table-cell; */
+            height: 100%;
+            padding: 30px;
+            /* vertical-align: middle; */
+        }
+
+        .has-error input {
+            border-color: red;
+        }
+
+        .has-error select {
+            border-color: red;
+        }
+
+        .has-danger select {
+            border-color: red;
+        }
+
+        .has-danger input {
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="wrapper">
+            <!-- SmartWizard html -->
+            <div id="smartwizard">
+                <ul>
+                    <li><a href="#step-1">Adım 1<br /><small>Üretim Başlat</small></a></li>
+                    <li><a href="#step-2">Adım 2<br /><small>Palet Okut</small></a></li>
+                    <li><a href="#step-3">Adım 3<br /><small>Paket/Koli Okut</small></a></li>
+                    <li><a href="#step-4">Adım 4<br /><small>Ürün Ekle</small></a></li>
+                </ul>
+                <div>
+                    <div id="step-1" class="">
+                        <h3 class="border-bottom border-gray pb-2">Üretim Bilgileri</h3>
+                        <div class="alert alert-info" role="alert" style="color:black">
+                            <h4 class="alert-heading">Uyarı!</h4>
+                            <p>Depo, ürün, palet kapasitesi, paket/koli kapasitesi, parti numarası, üretim ve son
+                                kullanma tarihlerini girerek <b>"İleri"</b> tuşuna basınız.</p>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Fason Üretim Yaptıran Üretici/İthalatçı </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="fa fa-user"></i></span>
+                                        <select class="form-control input-sm input-sm" required id="selectOutsourceFirm"
+                                            name="selectOutsourceFirm"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Palet Kapasitesi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i
+                                                class="icon-envelope-open"></i></span>
+                                        <input class="form-control input-sm onlyNumeric noNull" required
+                                            id="paletteCapacity" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Paket/Koli Kapasitesi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i
+                                                class="icon-envelope-open"></i></span>
+                                        <select class="form-control input-sm input-sm" required
+                                            id="selectPacketCapacity" name="selectPacketCapacity"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Depo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="fa fa-user"></i></span>
+                                        <select class="form-control input-sm input-sm" required id="selectWarehouse"
+                                            name="selectWarehouse"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Ürün</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="fa fa-user"></i></span>
+                                        <select class="form-control input-sm input-sm" onchange="productSelect(this);"
+                                            required id="selectProduct" name="selectProduct"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" id="divDnaNo" style="display: none">
+                                <div class="form-group">
+                                    <label for="SourceId">DNA No</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="ti-eye"></i></span>
+                                        <input class="form-control input-sm onlyAlphanumeric noNull"
+                                            onblur="dnaNoCheck();" type="password" id="dnaNo" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Parti No</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="ti-eye"></i></span>
+                                        <input class="form-control input-sm onlyAlphanumeric noNull" maxlength="60"
+                                            required id="batchNo" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Üretim Tarihi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="ti-notepad"></i></span>
+                                        <input class="form-control input-sm datepicker" value=""
+                                            data-date-format="dd.mm.yyyy" required name="ProductionDate"
+                                            id="ProductionDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Son Kullanma Tarihi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="ti-notepad"></i></span>
+                                        <input class="form-control input-sm datepicker" value=""
+                                            data-date-format="dd.mm.yyyy" required name="ExpirationDate"
+                                            id="ExpirationDate">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="step-2" class="">
+                        <h3 class="border-bottom border-gray pb-2">Palet Barkod Bilgisi</h3>
+                        <div class="alert alert-info" role="alert" style="color:black">
+                            <h4 class="alert-heading">Uyarı!</h4>
+                            <p>Palet üzerine yerleştirecek olduğunuz barkodu girdikten sonra <b>"İleri"</b> tuşuna
+                                basınız.
+                            </p>
+                            <hr>
+                            <p>Barkod okuyucu yardımı ile palet barkodunu okuttuğunuzda, otomatik olarak "Paket/Koli
+                                Okut" adımına geçecektir.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Palet Barkodu</label>
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon input-sm"><i class="fa fa-qrcode"></i></span>
+                                        <input type="text" id="PaletteQrCode" maxlength="13"
+                                            class="form-control input-sm nextBtn" name=" PackageQrCode" required />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="step-3" class="">
+                        <h3 class="border-bottom border-gray pb-2">Paket/Koli Barkod Bilgisi</h3>
+                        <div class="alert alert-info" role="alert" style="color:black">
+                            <h4 class="alert-heading">Uyarı!</h4>
+                            <p>Paket/Koli üzerine yerleştirecek olduğunuz barkodu girdikten sonra <b>"İleri"</b> tuşuna
+                                basınız.
+                            </p>
+                            <hr>
+                            <p>Barkod okuyucu yardımı ile paket/koli barkodunu okuttuğunuzda, otomatik olarak "Ürün
+                                Ekle" adımına geçecektir.</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Paket/Koli Barkodu</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="fa fa-qrcode"></i></span>
+                                        <input type="text" id="PackageQrCode" maxlength="13"
+                                            class="form-control input-sm nextBtn" name=" PackageQrCode" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="step-4" class="">
+                        <h3 class="border-bottom border-gray pb-2">Ürün Barkod Bilgisi</h3>
+                        <div class="alert alert-info" role="alert" style="color:black">
+                            <h4 class="alert-heading">Uyarı!</h4>
+                            <p>Ürün üzerine yerleştirecek olduğunuz Barkodu girdikten sonra <b>"Ekle"</b> tuşuna
+                                basınız.
+                            </p>
+                            <p>Barkod okuyucu yardımı ile ürün barkodunu okuttuğunuzda, otomatik olarak okutulan barkod
+                                ürünler listesine eklenecektir.</p>
+                            <p>Silme işlemi sadece mevcut pakete/koliye ürün eklemede yapılabilir. Eski
+                                paketteki/kolideki ürünler silinemez.</p>
+                        </div>
+                        <div id="toastUyari" class="alert alert-primary toastUyari" role="alert"
+                            style="margin-top: 10px; display: none">
+
+                        </div>
+                        <div id="toastWarning" class="alert alert-warning toastWarning" role="alert"
+                            style="margin-top: 10px; display: none">
+
+                        </div>
+                        <div id="toastHata" class="alert alert-danger toastHata" role="alert"
+                            style="margin-top: 10px; display: none">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="SourceId">Ürün Barkodu</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm"><i class="fa fa-qrcode"></i></span>
+                                        <input type="text" id="QrCodeText" maxlength="13"
+                                            class="form-control input-sm addBtn" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                <div class="form-group text-center" style="padding-top: 21px;">
+                                    <button class="btn btn-success" id="addProductQr"
+                                        onclick="controlQrCode($('#QrCodeText').val(),null);" type="button">
+                                        <i class="fa fa-qrcode"></i> Ekle
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div id="divProductTable" class="row" style="display:none">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="row col-md-12">
+                                            <div class="col-md-3" id="urunCounter"></div>
+                                            <div class="col-md-6" id="productTableName">
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <button style="display:none" class="btn btn-primary btn-lg" id="saveBtn"
+                                                    onclick="savePreview();" type="button">
+                                                    <i class="fa fa-barcode"></i> Üretimi Tamamla
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-block p-20">
+                                        <table class="table">
+                                            <thead style="font-weight:bold">
+                                                <tr>
+                                                    <td>Ürün Barkodu</td>
+                                                    <td>Paket/Koli Barkodu</td>
+                                                    <td>İşlem</td>
+
+                                                </tr>
+
+                                            </thead>
+                                            <tbody id="tableProduct"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="toastUyari" class="alert alert-primary toastUyari" role="alert"
+                style="margin-top: 10px; display: none">
+
+            </div>
+            <div id="toastWarning" class="alert alert-warning toastWarning" role="alert"
+                style="margin-top: 10px; display: none">
+
+            </div>
+
+            <div id="toastHata" class="alert alert-danger toastHata" role="alert"
+                style="margin-top: 10px; display: none">
+
+            </div>
+            <div class="row">
+                <div style="padding-top: 10px;" class="col-md-6">
+                    <button class="btn-info" onclick="menuyeDon();">
+                        <b>Menüye Dön</b>
+                    </button>
+                </div>
+                <div style="padding-top: 10px;" class="col-md-6">
+                    <button class="btn-danger" onclick="forceRestart();">
+                        <b>UYGULAMAYI YENİDEN BAŞLAT</b>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="saveComfirm" tabindex="-1" role="dialog" aria-labelledby="saveComfirmTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Lütfen bilgilerin doğruluğunu kontrol ediniz.
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning" style="color: #ff6d00 !important;" role="alert">
+                        <h4 class="alert-heading">Üretimi tamamlamak üzeresiniz!</h4>
+                        <p>Lütfen verilerin doğruluğunu kontrol ediniz. Paketlere/Kolilere ekleme çıkarma yapmak
+                            istiyorsanız işleminizin kayıt işlemini tamamlayıp, "Paket Düzenle" sayfasını
+                            kullanabilirsiniz.
+                        </p>
+                        <hr>
+                        <p class="mb-0">Verilerin doğruluğundan eminseniz "Kaydet" tuşuna basarak işleminizi
+                            tamamlayabilirsiniz.
+                        </p>
+                    </div>
+                    <div id="saveModalBody">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
+                    <button type="button" onclick="saveSubmit();" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="thank-you-pop text-center">
+                        <img style="max-width: 150px;" src="../Content/img/success.png" alt="">
+                        <hr>
+                        <h2 id="kayitMesaj"> Üretim tamamlandı. <br> Ana menüye yönlendiriliyor...</h2>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="continuousProduction()" class="btn btn-primary">Üretime Devam
+                        Et</button>
+                    <button type="button" onclick="restartPage()" class="btn btn-secondary" data-dismiss="modal">Yeni
+                        Üretim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="thank-you-pop text-center">
+                        <img style="max-width: 150px;" src="../Content/img/error.png" alt="">
+                        <hr>
+                        <h2 id="hataMesaj" style="word-wrap: break-word">
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="confirmModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yeniden Başlatılıyor...</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Üretim uygulaması yeniden başlatılacak. <b style="color:red;">Emin misiniz?</b></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnOnay">Evet</button>
+                    <button type="button" class="btn btn-secondary" id="btnRed">Hayır</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+
+
+        function menuyeDon() {
+            location.href = "../Shared/Menu.html";
+        }
+
+        Date.prototype.addHours = function (h) {
+            this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+            return this;
+        }
+
+        Date.prototype.addDays = function (days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+        let userModel = require('electron').remote.getGlobal('sharedObject').tokenModel;
+
+        //var Sync = require('sync');
+        // console.log(Sync);
+        var currentProductList;
+        var model;
+
+        var packetCount = 0;
+        var productCount = 0;
+
+
+        var packetCountControl = 0;
+        var productCountControl = 0;
+
+        var currentPage;
+
+        var currentPacketQr = "";
+        var currentPaletteQr = "";
+
+        var qrObject = [];
+        var packageQrCodeList = [];
+        var productQrCodeList = [];
+
+        var returnVal;
+
+        var continuousProduction_ = false;
+
+        function forceRestart() {
+            $("#confirmModal").modal();
+        }
+
+        $("#btnRed").click(function () {
+            $("#confirmModal").modal('hide');
+        });
+
+        $("#btnOnay").click(function () {
+            location.reload();
+        });
+
+        $(".noNull").on("blur", function () {
+            $(this).val($(this).val().trim());
+        });
+
+
+        function dnaNoCheck() {
+            var childPlace = $("#dnaNo").val().split('_')[1];
+            if (childPlace != userModel.childPlaceId) {
+                $("#dnaNo").val("");
+                $(".toastHata").html("DNA No üretim için kullanılamaz.");
+                $(".toastHata").show();
+                setTimeout(() => {
+                    $(".toastHata").hide();
+                }, 5000);
+            }
+        }
+
+        function saveSubmit() {
+            try {
+                $("#saveComfirm").modal('hide');
+            } catch (e) {
+                console.log(e);
+            }
+            model.BoxProducts = qrObject;
+            if ($("#selectPacketCapacity").val() != "KoliYok") {
+                postApi("/LiquidOperation/CreatePacketWithPallet", model).then(res => {
+                    console.log(res);
+                    if (res.Message == "Kaydedildi") {
+                        $("#kayitMesaj").html("Üretim kayıt edildi.<br> Mevcut seçimler ile üretime devam etmek ister misiniz?");
+                        $("#successModal").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    } else {
+                        $("#hataMesaj").html(res.Message);
+                        $("#errorModal").modal();
+                    }
+                });
+            }
+            else {
+                postApi("/LiquidOperation/CreatePacketOutsource", model).then(res => {
+                    console.log(res);
+                    if (res.Message == "Kaydedildi") {
+                        $("#kayitMesaj").html("Üretim kayıt edildi.<br> Mevcut seçimler ile üretime devam etmek ister misiniz?");
+                        $("#successModal").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    } else {
+                        $("#hataMesaj").html(res.Message);
+                        $("#errorModal").modal();
+                    }
+                });
+            }
+            //General.StartLoading();
+            // console.log("model", model);
+            // var urlApi = location.origin + "/Liquid/JsonCreatePacketWithPallet";
+            // getAjaxByModel(
+            //     ajaxType.POST,
+            //     { model: model },
+            //     urlApi,
+            //     ajaxDataType.JSON,
+            //     ajaxAsync.TRUE,
+            //     ajaxShowProgress.FALSE,
+            //     CreatePacketSubmitCallBack
+            // );
+        }
+
+        function CreatePacketSubmitCallBack(jsonResponse) {
+            //General.StopLoading();
+            try {
+                $("#saveComfirm").modal('hide');
+            } catch (e) {
+                console.log(e);
+            }
+            console.log(jsonResponse);
+            if (jsonResponse.IsSuccess) {
+                //toastr.success("BAŞARILI! Üretim tamamlandı.");
+                $("#saveBtn").hide();
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            } else {
+                //toastr.error(jsonResponse.Message);
+            }
+        }
+
+        function tableDelButonInit() {
+            $("#tableProduct").children("tr").children("td").children("button").each(function (i_, e_) {
+                if ($(e_).attr('id') != currentPacketQr)
+                    $(e_).remove();
+            });
+        }
+
+        function goPage(pageNum) {
+            debugger;
+
+            if (pageNum == 2) {
+                if (packetCount == parseInt(packetCountControl) && $("#selectPacketCapacity").val() != "KoliYok") {
+                    //alert("Kayit Tamamla");
+                    model.BoxProducts = qrObject;
+                    console.log(model);
+                    $("#QrCodeText").attr("disabled", "disabled");
+                    savePreview();
+                    $("#saveBtn").show();
+
+                    return;
+                }
+            }
+            setTimeout(function () {
+                $('#smartwizard').data('smartWizard')._showStep(pageNum); // go to step 3....
+            }, 50);
+            //toastr.info("Lütfen yeni paket/koli barkodunu okutunuz.");
+            if (pageNum != 1) {
+                $(".toastUyari").html("Lütfen yeni paket/koli barkodunu okutunuz.");
+                $(".toastUyari").show();
+                setTimeout(() => {
+                    $(".toastUyari").hide();
+                }, 5000);
+                $("#PackageQrCode").val('');
+            }
+        }
+
+        function deleteBarcode(qrCode) {
+
+            for (var i = 0; i < qrObject.length; i++) {
+                if (qrObject[i].QrCode == qrCode) {
+                    productCount--;
+                    $("#row_" + qrCode).remove();
+                    //currentPacketQr = $("#PackageQrCode").val();
+
+                    qrObject.splice(i, 1);
+                    $("#QrCodeText").removeAttr("disabled");
+                    // $("#saveBtn").hide();
+
+                    // var sayac = 0;
+                    // for (var i_ = 0; i_ < qrObject.length; i_++) {
+                    //     if (qrObject[i_].ParentQrCode == currentPacketQr) {
+                    //         sayac++;
+                    //     }
+                    // }
+                    // if (sayac < 1) {
+                    //     qrObject.splice(qrObject.indexOf(currentPacketQr), 1);
+                    // }
+                }
+            }
+
+            var qrCount = 0;
+            productCount = 0;
+            for (var i = 0; i < qrObject.length; i++) {
+                if (qrObject[i].ParentQrCode == currentPacketQr) {
+                    productCount++;
+                }
+                if (qrObject[i].QrType == null)
+                    qrCount++
+            }
+
+            counterHesapla();
+
+            $("#QrCodeText").focus();
+        }
+
+        function qrValidControl(qrCode) {
+
+            for (var i = 0; i < qrObject.length; i++) {
+                if (qrObject[i].QrCode == qrCode) {
+                    if (qrObject[i].QrType == 3) {
+                        //toastr.warning("Barkod palet barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                        console.log("Barkod palet barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                        $(".toastWarning").html("Barkod palet barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                        $(".toastWarning").show();
+                        setTimeout(() => {
+                            $(".toastWarning").hide();
+                        }, 5000);
+                        $("#PackageQrCode").val('');
+                        return false;
+                    }
+                    if (qrObject[i].QrType == 2) {
+                        //toastr.warning("Barkod paket/koli barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                        $(".toastWarning").html("Barkod paket/koli barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                        $(".toastWarning").show();
+                        setTimeout(() => {
+                            $(".toastWarning").hide();
+                        }, 5000);
+                        $("#PackageQrCode").val('');
+                        console.log("Barkod paket/koli barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                        return false;
+                    }
+                    if (qrObject[i].QrType == null) {
+                        //toastr.warning("Barkod ürün listesinde mevcut. Lütfen farklı bir barkod giriniz.");
+                        console.log("Barkod ürün listesinde mevcut. Lütfen farklı bir barkod giriniz.");
+                        $(".toastWarning").html("Barkod ürün listesinde mevcut. Lütfen farklı bir barkod giriniz.");
+                        $(".toastWarning").show();
+                        setTimeout(() => {
+                            $(".toastWarning").hide();
+                        }, 5000);
+                        $("#PackageQrCode").val('');
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function savePreview() {
+            var paletteAmount = 0;
+            var packetAmount = 0;
+            var productAmount = 0;
+
+            for (var i = 0; i < qrObject.length; i++) {
+                if (qrObject[i].QrType == null) {
+                    productAmount++;
+                } else if (qrObject[i].QrType == 2) {
+                    packetAmount++;
+                } else if (qrObject[i].QrType == 3) {
+                    paletteAmount++;
+                }
+            }
+            $("#saveModalBody").html("");
+            $("#saveModalBody").append("<p style=\"font-weight: bold;color: #1b5e20;\">Toplam Palet Sayısı : " + paletteAmount + " </p> <br><p style=\"font-weight: bold;color: #388e3c;\">Toplam Paket/Koli Sayısı : " + packetAmount + " </p> <br><p style=\"font-weight: bold;color: #66bb6a;\">Toplam Ürün Sayısı : " + productAmount + " </p> <br>");
+
+
+            $("#saveComfirm").modal('show');
+        }
+
+        $(document).ready(function () {
+
+            $("#selectOutsourceFirm").change(function () {
+                var val = $(this).val();
+                if (val != undefined && val != null && val != "") {
+                    PaletteCreatePacket.productSelectLoad(val);
+                    PaletteCreatePacket.packetCapacityLoad(val);
+                }
+                else {
+                    $('#selectPacketCapacity').html("");
+                    $('#selectPacketCapacity')
+                        .append($("<option></option>")
+                            .attr("value", "")
+                            .text("Seçiniz"));
+                    $('#selectProduct').html("");
+                    $('#selectProduct')
+                        .append($("<option></option>")
+                            .attr("value", "")
+                            .text("Seçiniz"));
+                }
+            });
+
+            $("#selectPacketCapacity").change(function () {
+                if ($(this).val() == "KoliYok") {
+                    $("#paletteCapacity").val("");
+                    $("#paletteCapacity").attr("disabled", "disabled");
+                    $("#paletteCapacity").removeAttr("required");
+                }
+                else {
+                    $("#paletteCapacity").removeAttr("disabled");
+                    $("#paletteCapacity").attr("required", "required");
+                }
+            });
+
+
+
+            $.each($(".datepicker"), function () {
+                $(this).datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    format: "dd.mm.yyyy",
+                    language: "tr-TR"
+                });
+            });
+
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = d.getMonth();
+            var day = d.getDate();
+            var c = new Date(year + 3, month, day)
+
+            $('#ExpirationDate').datepicker("setDate", c);
+            $('#ProductionDate').datepicker("setDate", d);
+
+
+            $('.onlyNumeric').keyup(function (e) {
+                if (/\D/g.test(this.value)) {
+                    this.value = this.value.replace(/\D/g, '');
+                }
+            });
+
+            $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection, stepPosition) {
+                if (stepNumber == "0") {
+
+                } else if (stepNumber == "1") {
+                    //paletteFocus
+                    setTimeout(function () {
+                        $("#PaletteQrCode").focus();
+                    }, 500);
+                    $(".sw-btn-next").hide();
+
+                } else if (stepNumber == "2") {
+                    //kolifocus
+                    setTimeout(function () {
+                        $("#PackageQrCode").focus();
+                    }, 500);
+
+
+                } else if (stepNumber == "3") {
+                    //urunfocus
+                    setTimeout(function () {
+                        $("#QrCodeText").focus();
+                    }, 500);
+
+                    $("#productTableName").html("Mevcut ekleme yapılan palet : <b style='color:#1b5e20'>" + currentPaletteQr + "</b> </br> Mevcut ekleme yapılan paket/koli : <b style='color:#388e3c'>" + currentPacketQr + "</b> <div id='currentPacketQrCount'><br>Mevcut paket/koli içerisindeki ürün sayısı : <b style='color: #007bff;'>0</b></div>")
+                }
+            });
+
+
+
+            $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
+                debugger;
+                var tabNum = parseInt(stepNumber) + 1;
+                var elmForm = $("#step-" + tabNum);
+                if (stepDirection === 'forward' && elmForm && $("#selectPacketCapacity").val() != "KoliYok") {
+                    elmForm.validator('validate');
+                    var elmErr = elmForm.find('.has-error');
+                    $(elmForm).find('select').each(function (index, elem) {
+                        if ($(elem).val() == "0") {
+                            $(elem).parent().parent().addClass("has-error has-danger");
+                            return false;
+                        }
+                    });
+                    if (elmErr.length > 0) {
+                        return false;
+                    }
+                }
+                packetCountControl = $("#paletteCapacity").val();
+                productCountControl = $("#selectPacketCapacity").val();
+                console.log(stepNumber);
+
+                if (!continuousProduction_) {
+                    currentPage = parseInt(stepNumber) + 1;
+                }
+                continuousProduction_ = false;
+
+                if (parseInt(stepNumber) === 0) {
+                    model = {
+                        TerminalId: macAdrr,
+                        ExpirationDate: $("#ExpirationDate").datepicker('getDate').addDays(1),
+                        ProductionDate: $("#ProductionDate").datepicker('getDate'),
+                        Capacity: null,
+                        PartyNo: $("#batchNo").val(),
+                        ProductId: $("#selectProduct").val(),
+                        IsOutSource: true,
+                        PackageQrType: $("#selectPacketCapacity").val() == "KoliYok" ? 2 : 3, //Palet için
+                        OutSourcePlaceId: $("#selectOutsourceFirm").val(),
+                        FactoryWarehouse: $("#selectWarehouse").val(),
+                        FactoryId: userModel.childPlaceId,
+                        EntryType: "C",
+                        BoxProducts: []
+                    };
+
+                    console.log(model);
+                    if ($("#selectPacketCapacity").val() == "KoliYok") {
+                        elmForm.validator('validate');
+                        var elmErr = elmForm.find('.has-error');
+                        $(elmForm).find('select').each(function (index, elem) {
+                            if ($(elem).val() == "0") {
+                                $(elem).parent().parent().addClass("has-error has-danger");
+                                return false;
+                            }
+                        });
+                        if (elmErr.length > 0) {
+                            return false;
+                        }
+                        else {
+                            goPage(2);
+                        }
+                    }
+                    else {
+                        return true;
+                    }
+                }
+                // else if (parseInt(stepNumber) === 1) {
+                //     var returnVal = controlQrCode($("#PaletteQrCode").val(), 3);
+                //     if (!returnVal) {
+                //         $("#PaletteQrCode").val('');
+                //         $("#PaletteQrCode").focus();
+                //     }
+                //     return returnVal;
+                // }
+                // else if (parseInt(stepNumber) === 2) {
+                //     var returnVal = controlQrCode($("#PackageQrCode").val(), 2);
+                //     if (!returnVal) {
+                //         $("#PackageQrCode").val('');
+                //         $("#PackageQrCode").focus();
+                //     }
+                //     return returnVal;
+                // }
+                else if (parseInt(stepNumber) === 3) {
+                    //var returnVal = true;
+                    return true;
+                }
+            });
+
+            $('#smartwizard').smartWizard({
+                selected: 0,
+                theme: 'arrows',
+                transitionEffect: 'fade',
+                showStepURLhash: false,
+                toolbarSettings: {
+                    toolbarButtonPosition: 'end',
+                },
+                keyNavigation: false,
+                anchorSettings: {
+                    markDoneStep: true,
+                    markAllPreviousStepsAsDone: true,
+                    removeDoneStepOnNavigateBack: true,
+                    enableAnchorOnDoneStep: true
+                }
+            });
+
+            $(".sw-btn-prev").hide();
+
+            PaletteCreatePacket.outsourcePlacesLoad();
+            PaletteCreatePacket.warehouseSelectLoad();
+            // PaletteCreatePacket.productSelectLoad();
+            // PaletteCreatePacket.packetCapacityLoad();
+
+        });
+
+        function productSelect(this_) {
+            var productModel = {
+                PlaceId: $("#selectOutsourceFirm").val(),
+                PageInfo: {
+                    AllData: true
+                }
+            };
+            postApi('/OutsourceProduction/GetProductPaging/', productModel).then(response => {
+                currentProductList = response.Data;
+                for (let i = 0; i < currentProductList.length; i++) {
+                    if ($(this_).val() == currentProductList[i].Id) {
+                        if (currentProductList[i].ProductType == "A" && currentProductList[i].ProductionWithTerminal == true) {
+                            //DNA NO alanı iste
+                            console.log("Dna No Açılacak");
+                            $("#dnaNo").prop("required", "required");
+                            $("#divDnaNo").show();
+                            return;
+                        } else if (currentProductList[i].ProductType == "A" && currentProductList[i].ProductionWithTerminal == false) {
+                            console.log("Üretim Yapılamaz");
+                            $(".toastHata").html("Seçilen ürün için üretim yapılamaz.");
+                            $(".toastHata").show();
+                            setTimeout(() => {
+                                $(".toastHata").hide();
+                            }, 5000);
+                            $("#selectProduct").val("");
+                            return;
+                        } else {
+                            console.log(currentProductList[i]);
+                            console.log("Normal");
+                            $("#dnaNo").removeAttr("required");
+                            $("#divDnaNo").hide();
+                            return;
+                        }
+                    }
+                }
+            });
+        }
+
+        function controlQrCode(qrCode, qrType) {
+            var currentdate = new Date().addHours(3);
+            returnVal = undefined;
+            try {
+                //var kontrolDeger = false;
+                var barcodeControl = RegExp(/E{1}\d{1}L{1}\d{1}I\d{1}\w{1}\d{6}|G{1}\d{1}T{1}\d{1}S\d{1}\w{1}\d{6}/i);
+                if (qrCode == "") {
+                    returnVal = false;
+                } else if (qrCode.length < 13) {
+                    returnVal = false;
+                } else if (!barcodeControl.test(qrCode)) {
+                    if (qrType == null) {
+                        $("#QrCodeText").val('');
+                        $("#QrCodeText").focus();
+                    }
+                    if (qrType == 2) {
+                        $("#PackageQrCode").val('');
+                        $("#PackageQrCode").focus();
+                    }
+                    if (qrType == 3) {
+                        $("#PaletteQrCode").val('');
+                        $("#PaletteQrCode").focus();
+                    }
+                    //toastr.error("Geçersiz Barkod, Lütfen kontrol ederek tekrar deneyiniz.");
+                    $(".toastHata").html("Geçersiz Barkod, Lütfen kontrol ederek tekrar deneyiniz.");
+                    $(".toastHata").show();
+                    setTimeout(() => {
+                        $(".toastHata").hide();
+                    }, 5000);
+                    $("#PackageQrCode").val('');
+                    returnVal = false;
+                }
+                if (returnVal == undefined) {
+                    var qrControlModel = {
+                        QrCode: qrCode,
+                        ProductId: $("#selectProduct").val()
+                    };
+                    postApi('/BoxProduct/ValidateBanderoleProductType/', qrControlModel).then(res => {
+                        if (!res.Success) {
+                            if (qrType == null) {
+                                $("#QrCodeText").val('');
+                                $("#QrCodeText").focus();
+                            }
+                            if (qrType == 2) {
+                                $("#PackageQrCode").val('');
+                                $("#PackageQrCode").focus();
+                            }
+                            if (qrType == 3) {
+                                $("#PaletteQrCode").val('');
+                                $("#PaletteQrCode").focus();
+                            }
+                            //toastr.error(res.Message);
+                            $(".toastHata").html(res.Message);
+                            $(".toastHata").show();
+                            setTimeout(() => {
+                                $(".toastHata").hide();
+                            }, 5000);
+                            returnVal = false;
+                        } else {
+                            var _qrObject = {};
+                            var qrList = [];
+                            qrList.push(qrCode);
+                            _qrObject["QrCodes"] = qrList;
+                            postApi('/LiquidOperation/ControlExistingQrCodes/', _qrObject).then(res => {
+
+                                //General.StopLoading();
+                                if (res.Data.QrCodeExistenceDictionary[qrCode] == true) {
+                                    if (qrType == null) {
+                                        $("#QrCodeText").val('');
+                                        $("#QrCodeText").focus();
+                                    }
+                                    if (qrType == 2) {
+                                        $("#PackageQrCode").val('');
+                                        $("#PackageQrCode").focus();
+                                    }
+                                    if (qrType == 3) {
+                                        $("#PaletteQrCode").val('');
+                                        $("#PaletteQrCode").focus();
+                                    }
+                                    //toastr.warning("Barkod daha önce başka bir üründe kullanılmış. Lütfen farklı bir barkod okutunuz.");
+                                    console.log("Barkod daha önce başka bir üründe kullanılmış. Lütfen farklı bir barkod okutunuz.");
+                                    $(".toastWarning").html("Barkod daha önce başka bir üründe kullanılmış. Lütfen farklı bir barkod okutunuz.");
+                                    $(".toastWarning").show();
+                                    setTimeout(() => {
+                                        $(".toastWarning").hide();
+                                    }, 5000);
+                                    returnVal = false;
+                                } else {
+                                    //Geçerli barkod
+                                    if (qrType == 3) { //Palet Karekodu
+                                        if (!qrValidControl(qrCode)) {
+                                            returnVal = false;
+                                        } else {
+                                            qrObject.push({
+                                                CreateDate: null,
+                                                CreateUserId: userModel.id,
+                                                DnaCode: $("#dnaNo").val().trim() != "" ? $("#dnaNo").val().trim() : "DNA-000",
+                                                FactoryId: userModel.childPlaceId,
+                                                FactoryProductionBandId: 202,
+                                                ParentQrCode: null,
+                                                ProductId: $("#selectProduct").val(),
+                                                ProductStatus: 1,
+                                                QrCode: qrCode,
+                                                QrType: 3, //Palet
+                                                RaspberryId: null,
+                                                NodeId: 6,
+                                                FactoryWarehouse: $("#selectWarehouse").val(),
+                                                OprDate: currentdate
+                                            });
+                                            returnVal = true;
+                                            currentPaletteQr = qrCode;
+                                        }
+
+                                    } else if (qrType == 2) { // Koli karekodu
+                                        if (!qrValidControl(qrCode)) {
+                                            returnVal = false;
+                                            $("#PackageQrCode").val('');
+                                            setTimeout(function () {
+                                                $("#PackageQrCode").focus();
+                                            }, 500);
+                                        } else {
+
+                                            packetCount++;
+                                            //geçerli koli barkodu
+                                            qrObject.push({
+                                                CreateDate: null,
+                                                CreateUserId: userModel.id,
+                                                DnaCode: $("#dnaNo").val().trim() != "" ? $("#dnaNo").val().trim() : "DNA-000",
+                                                FactoryId: userModel.childPlaceId,
+                                                FactoryProductionBandId: 202,
+                                                ParentQrCode: $("#PaletteQrCode").val() == "" ? null : $("#PaletteQrCode").val(),
+                                                ProductId: $("#selectProduct").val(),
+                                                ProductStatus: 1,
+                                                QrCode: qrCode,
+                                                QrType: 2, //koli
+                                                RaspberryId: null,
+                                                NodeId: 6,
+                                                FactoryWarehouse: $("#selectWarehouse").val(),
+                                                OprDate: currentdate
+                                            });
+                                            currentPacketQr = $("#PackageQrCode").val();
+                                            tableDelButonInit();
+                                            returnVal = true;
+                                        }
+                                    } else if (qrType == null) { // Ürün Karekodu
+
+                                        var addProductStatus = false;
+                                        if (!qrValidControl(qrCode)) {
+                                            addProductStatus = false;
+                                            returnVal = false;
+                                            $("#QrCodeText").val('');
+                                            setTimeout(function () {
+                                                $("#QrCodeText").focus();
+                                            }, 500);
+                                        } else {
+
+                                            //geçerli ürün barkodu
+                                            var sayac = 0;
+                                            for (var a = 0; a < qrObject.length; a++) {
+                                                if (qrObject[a].QrCode == currentPacketQr) {
+                                                    sayac++;
+                                                }
+                                            }
+                                            if (sayac < 1) {
+                                                if (currentPacketQr == qrCode) {
+                                                    //toastr.warning("Barkod paket/koli barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                                                    console.log("Barkod paket/koli barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                                                    $(".toastWarning").html("Barkod paket/koli barkodu olarak okutuldu. Lütfen farklı bir barkod giriniz.");
+                                                    $(".toastWarning").show();
+                                                    setTimeout(() => {
+                                                        $(".toastWarning").hide();
+                                                    }, 5000);
+                                                    addProductStatus = false;
+                                                    $("#QrCodeText").val('');
+                                                    $("#QrCodeText").focus();
+                                                } else {
+
+                                                    qrObject.push({
+                                                        CreateDate: null,
+                                                        CreateUserId: userModel.id,
+                                                        DnaCode: $("#dnaNo").val().trim() != "" ? $("#dnaNo").val().trim() : "DNA-000",
+                                                        FactoryId: userModel.childPlaceId,
+                                                        FactoryProductionBandId: 202,
+                                                        ParentQrCode: $("#PaletteQrCode").val() == "" ? null : $("#PaletteQrCode").val(),
+                                                        ProductId: $("#selectProduct").val(),
+                                                        ProductStatus: 1,
+                                                        QrCode: currentPacketQr,
+                                                        QrType: 2, //koli
+                                                        RaspberryId: null,
+                                                        NodeId: 6,
+                                                        FactoryWarehouse: $("#selectWarehouse").val(),
+                                                        OprDate: currentdate
+                                                    });
+
+                                                    qrObject.push({
+                                                        CreateDate: null,
+                                                        CreateUserId: userModel.id,
+                                                        DnaCode: $("#dnaNo").val().trim() != "" ? $("#dnaNo").val().trim() : "DNA-000",
+                                                        FactoryId: userModel.childPlaceId,
+                                                        FactoryProductionBandId: 202,
+                                                        ParentQrCode: currentPacketQr,
+                                                        ProductId: $("#selectProduct").val(),
+                                                        ProductStatus: 1,
+                                                        QrCode: qrCode,
+                                                        QrType: null,
+                                                        RaspberryId: null,
+                                                        NodeId: 6,
+                                                        FactoryWarehouse: $("#selectWarehouse").val(),
+                                                        OprDate: currentdate
+                                                    });
+                                                    productCount++;
+
+                                                    addProductStatus = true;
+                                                }
+                                            } else {
+                                                qrObject.push({
+                                                    CreateDate: null,
+                                                    CreateUserId: userModel.id,
+                                                    DnaCode: $("#dnaNo").val().trim() != "" ? $("#dnaNo").val().trim() : "DNA-000",
+                                                    FactoryId: userModel.childPlaceId,
+                                                    FactoryProductionBandId: 202,
+                                                    ParentQrCode: currentPacketQr,
+                                                    ProductId: $("#selectProduct").val(),
+                                                    ProductStatus: 1,
+                                                    QrCode: qrCode,
+                                                    QrType: null,
+                                                    RaspberryId: null,
+                                                    NodeId: 6,
+                                                    FactoryWarehouse: $("#selectWarehouse").val(),
+                                                    OprDate: currentdate
+                                                });
+                                                productCount++;
+                                                addProductStatus = true;
+                                            }
+                                            if (addProductStatus) {
+                                                $("#QrCodeText").val('');
+                                                $("#tableProduct").prepend('<tr id="row_' + qrCode + '"><th>' + qrCode + '</th><td>' + currentPacketQr + '</td><td><button id="' + currentPacketQr + '" class="btn-danger" onclick="deleteBarcode(\'' + qrCode + '\');">Sil</button></td></tr>');
+                                                tableDelButonInit();
+                                                $("#divProductTable").show();
+
+                                                if (productCount == parseInt(productCountControl)) {
+
+                                                    //Yeni Koli Karekodu Giriniz
+                                                    goPage(2);
+                                                    //currentPacketQr = $("#PackageQrCode").val();
+                                                    $("#QrCodeText").val('');
+                                                    returnVal = addProductStatus;
+                                                    productCount = 0;
+                                                }
+                                            }
+
+                                            counterHesapla();
+
+                                            //Counter burada artacak
+                                        }
+                                    }
+                                }
+                            });
+                            // .fail(function () {
+                            //     //General.StopLoading();
+                            //     returnVal = false;
+                            //     return returnVal;
+                            // });
+                        }
+                    });
+                }
+            } catch (error) {
+
+            } finally {
+                return returnVal;
+            }
+
+        }
+
+
+        var PaletteCreatePacket = {
+            packetCapacityLoad: function (placesId) {
+                var capacityModel = {
+                    PlaceId: placesId,
+                    PageInfo: {
+                        AllData: true
+                    }
+                };
+                $('#selectPacketCapacity').html("");
+                $('#selectPacketCapacity')
+                    .append($("<option></option>")
+                        .attr("value", "")
+                        .text("Seçiniz"));
+
+                postApi('/LiquidOperation/GetPlacePackagePagingOutsource/', capacityModel).then(response => {
+                    console.log(response);
+                    // data.Data.sort((a, b) => a.PackageSize - b.PackageSize);
+                    $.each(response.Data.sort((a, b) => a.PackageSize - b.PackageSize), function (key, value) {
+                        $('#selectPacketCapacity')
+                            .append($("<option></option>")
+                                .attr("value", value.PackageSize)
+                                .text(value.PackageSize));
+                    });
+                    $('#selectPacketCapacity')
+                        .append($("<option></option>")
+                            .attr("value", "KoliYok")
+                            .text("Koli Yok"));
+                });
+
+
+            },
+            outsourcePlacesLoad: function () {
+                var productModel = {
+                    PageInfo: {
+                        AllData: true
+                    },
+                };
+                $('#selectOutsourceFirm')
+                    .append($("<option></option>")
+                        .attr("value", "")
+                        .text("Seçiniz"));
+
+                postApi('/OutsourceProduction/GetOutsourceProductionPlacesAutoComplete/', productModel).then(response => {
+                    console.log(response);
+                    $.each(response.Data, function (key, value) {
+                        $('#selectOutsourceFirm')
+                            .append($("<option></option>")
+                                .attr("value", value.Id)
+                                .text(value.CompanyName));
+                    });
+                });
+            },
+            productSelectLoad: function (placeIds) {
+                var productModel = {
+                    PageInfo: {
+                        AllData: true
+                    },
+                    PlaceId: placeIds
+                };
+                $('#selectProduct').html("");
+                $('#selectProduct')
+                    .append($("<option></option>")
+                        .attr("value", "")
+                        .text("Seçiniz"));
+
+                postApi('/OutsourceProduction/GetProductPaging/', productModel).then(response => {
+                    console.log(response);
+                    currentProductList = response.Data;
+                    $.each(response.Data, function (key, value) {
+                        $('#selectProduct')
+                            .append($("<option></option>")
+                                .attr("value", value.Id)
+                                .text(value.ProductName));
+                    });
+                });
+            },
+            warehouseSelectLoad: function () {
+                var placeModel = {
+                    ParentId: userModel.placeId,
+                    PlaceType: "3"
+                };
+                $('#selectWarehouse')
+                    .append($("<option></option>")
+                        .attr("value", "")
+                        .text("Seçiniz"));
+
+                postApi('/Setting/GetFactoryList/', placeModel).then(response => {
+                    console.log(response);
+                    $.each(response.Data, function (key, value) {
+                        $('#selectWarehouse')
+                            .append($("<option></option>")
+                                .attr("value", value.Id)
+                                .text(value.CompanyName));
+                    });
+                });
+            },
+        };
+
+        $(".nextBtn").on('keyup', function (e) {
+            if (e.which == 13) {
+
+                //$(".sw-btn-next").click();
+                if (currentPage == 1) {
+                    controlQrCode($("#PaletteQrCode").val(), 3);
+                }
+
+                if (currentPage == 2 || currentPage == 4) {
+                    controlQrCode($("#PackageQrCode").val(), 2);
+                }
+
+                var interval = setInterval(() => {
+                    console.log(returnVal);
+                    if (returnVal != undefined) {
+                        if (returnVal == true) {
+                            returnVal = undefined;
+                            console.log("sayfa geçecek");
+
+                            if (currentPage == 1) {
+                                currentPaletteQr = $("#PaletteQrCode").val();
+                            } else if (currentPage == 2 || currentPage == 4) {
+                                currentPacketQr = $("#PackageQrCode").val();
+                            }
+
+                            clearInterval(interval);
+                            $(".sw-btn-next").click();
+                        } else {
+                            console.log("Sayfa geçmeyecek");
+                            returnVal = undefined;
+                            clearInterval(interval);
+                        }
+                    } else {
+                        console.log("Sonuc bekleniyor");
+                    }
+                }, 50);
+                console.log(model);
+                console.log(qrObject);
+            }
+        });
+
+        $(".addBtn").on('keyup', function (e) {
+            if (e.which == 13) {
+                $("#addProductQr").click();
+            }
+        });
+
+        function counterHesapla() {
+            var paletteAmount_ = 0;
+            var packetAmount_ = 0;
+            var productAmount_ = 0;
+            var currentPacketQrCount = 0;
+            for (var i = 0; i < qrObject.length; i++) {
+                //toplam countlar hesaplanıyor
+                if (qrObject[i].QrType == null) {
+                    productAmount_++;
+                } else if (qrObject[i].QrType == 2) {
+                    packetAmount_++;
+                } else if (qrObject[i].QrType == 3) {
+                    paletteAmount_++;
+                }
+
+                //mevcut koli içerisindeki ürün hesaplanıyor
+
+                if (qrObject[i].ParentQrCode == currentPacketQr) {
+                    if (qrObject[i].QrType == null) {
+                        currentPacketQrCount++;
+                    }
+                }
+            }
+
+            if (currentPacketQrCount > 0) {
+                $("#saveBtn").show();
+            } else {
+                $("#saveBtn").hide()
+            }
+
+            $("#currentPacketQrCount").html('<br>Mevcut paket/koli içerisindeki ürün sayısı : <b style="color: #007bff;">' + currentPacketQrCount + '</b>');
+
+            $("#urunCounter").html("<p style=\"font-weight: bold;color: #1b5e20;\">Ürün Sayısı : " + productAmount_ + " <br> Paket/Koli Sayısı : " + packetAmount_ + "  <br> Palet Sayısı : " + paletteAmount_ + "  </p> ");
+        }
+
+        function continuousProduction() {
+            debugger;
+            continuousProduction_ = true;
+            try {
+                $("#successModal").modal("hide");
+            } catch (error) {
+                console.log(error);
+            }
+
+            currentProductList = undefined;
+            model = undefined;
+
+            packetCount = 0;
+            productCount = 0;
+
+
+            packetCountControl = 0;
+            productCountControl = 0;
+
+            if ($("#selectPacketCapacity").val() == "KoliYok") {
+                currentPage = 2;
+            }
+            else {
+                currentPage = 1;
+            }
+
+            currentPacketQr = "";
+            currentPaletteQr = "";
+
+            qrObject = [];
+            packageQrCodeList = [];
+            productQrCodeList = [];
+
+            $("#PaletteQrCode").val("");
+            $("#PackageQrCode").val("");
+            $("#QrCodeText").val("");
+            $("#tableProduct").html("");
+            $("#divProductTable").hide();
+            $("#QrCodeText").removeAttr("disabled");
+
+            returnVal = undefined;
+
+            model = {
+                TerminalId: macAdrr,
+                ExpirationDate: $("#ExpirationDate").datepicker('getDate').addDays(1),
+                ProductionDate: $("#ProductionDate").datepicker('getDate'),
+                Capacity: null,
+                PartyNo: $("#batchNo").val(),
+                ProductId: $("#selectProduct").val(),
+                IsOutSource: true,
+                PackageQrType: $("#selectPacketCapacity").val() == "KoliYok" ? 2 : 3, //Palet için
+                OutSourcePlaceId: $("#selectOutsourceFirm").val(),
+                FactoryWarehouse: $("#selectWarehouse").val(),
+                FactoryId: userModel.childPlaceId,
+                EntryType: "C",
+                BoxProducts: []
+            };
+
+            if ($("#selectPacketCapacity").val() == "KoliYok") {
+                goPage(2);
+                $("#PackageQrCode").focus();
+            }
+            else {
+                goPage(1);
+                $("#PaletteQrCode").focus();
+            }
+        }
+
+        function restartPage() {
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+    </script>
+
+</body>
+
+</html>

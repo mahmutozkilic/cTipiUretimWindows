@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start",
+  "name": "gts-uretim",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "gts-c-tipi-uretim",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -17,6 +17,25 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^6.0.7"
+    "electron": "^6.0.7",
+    "electron-packager": "^14.0.6",
+    "electron-winstaller": "^4.0.0"
+  },
+  "dependencies": {
+    "async": "^3.1.0",
+    "async-series": "0.0.1",
+    "bootstrap": "^4.3.1",
+    "electron-json-config": "^1.5.3",
+    "fibers": "^4.0.1",
+    "form-data": "^2.5.1",
+    "gulp": "^4.0.2",
+    "is-online": "^8.2.0",
+    "jquery": "^3.4.1",
+    "macaddress": "^0.2.9",
+    "node-fetch": "^2.6.0",
+    "node-notifier": "^5.4.3",
+    "popper.js": "^1.15.0",
+    "sync": "^0.2.5",
+    "xmlhttprequest": "^1.8.0"
   }
 }

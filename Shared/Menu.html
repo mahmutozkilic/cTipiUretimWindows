@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gübre Takip Sistemi</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
+    <script src="../renderer.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .card {
+            background-color: transparent !important;
+        }
+
+        .main {
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+
+        .account-pages {
+            background: transparent url(../Content/img/bg-login.jpg) no-repeat;
+            background-size: cover;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+
+        }
+
+        .card-img-top {
+            width: 30%;
+            padding-top: 10px;
+            margin: 0 auto !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="account-pages"></div>
+    <div class="row" style="margin:0px; padding: 20px;">
+        <div class="col-sm-6">
+            <div class="card">
+                <img src="../Content/img/Uretim.png" class="card-img-top" alt="...">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Hakedişsiz Üretim</h5>
+                    <p class="card-text">Kendi adınıza üretim yapmak için bu menüyü kullanınız. Paletsiz üretim için
+                        sonraki menüden "Paket/Koli Kapasitesi" alanından
+                        "Koli Yok" seçeneğini seçerek ilerleyiniz.</p>
+                    <a href="../Liquid/CreatePacketWPalette.html" class="btn btn-primary btn-lg">Üretime Başla</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <img src="../Content/img/FasonUretim.png" class="card-img-top" alt="...">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Hakedişsiz Fason Üretim</h5>
+                    <p class="card-text">Firma adına üretim yapmak için bu menüyü kullanınız. Paletsiz üretim için
+                        sonraki menüden "Paket/Koli Kapasitesi" alanından
+                        "Koli Yok" seçeneğini seçerek ilerleyiniz.</p>
+                    <a href="../Liquid/CreatePacketWPaletteOutsource.html" class="btn btn-primary btn-lg">Üretime Başla</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

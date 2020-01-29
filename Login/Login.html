@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gübre Takip Sistemi</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .main {
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+
+        .wrapper {
+            display: table-cell;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        .account-pages {
+            background: transparent url(../Content/img/bg-login.jpg) no-repeat;
+            background-size: cover;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+
+        }
+
+        .login-logo {
+            background: transparent url(../Content/img/logo.png) no-repeat;
+            height: 55px;
+            width: 191px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .logo-motto {
+            color: #0F5384;
+            font-size: 14px;
+            font-weight: normal;
+            letter-spacing: 2.2px;
+            margin-left: 5px;
+        }
+
+        html,
+        body,
+        form,
+        .login .wrapper-page {
+            height: 100%;
+        }
+
+        .login .wrapper-page {
+            margin: 0 !important;
+            width: 100%;
+            display: table;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .login .card-box {
+            background: transparent !important;
+            border: none !important;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .login .login-wrap {
+            max-width: 420px;
+            min-width: 280px;
+            margin: 0 auto;
+        }
+
+        .login .login-choose-wrap {
+            max-width: 550px;
+            min-width: 380px;
+            margin: 0 auto;
+        }
+
+        .logo-motto {
+            color: #0F5384;
+            font-size: 14px;
+            font-weight: normal;
+            letter-spacing: 2.2px;
+            margin-left: 5px;
+        }
+
+        .login-wrap .panel-heading {
+            margin-bottom: 45px;
+        }
+
+        .login .form-group {
+            margin-bottom: 30px;
+        }
+
+        .login .form-control {
+            background: transparent !important;
+            width: calc(100% - 50px);
+            color: #007bbd;
+            border-radius: 0 !important;
+            border-bottom-color: #007bbd !important;
+            border-top: none !important;
+            border-right: none !important;
+            border-left: none !important;
+        }
+
+        .login i {
+            margin-right: 10px;
+            float: left;
+            color: #007bbd;
+            padding: 8px;
+            border: 1px solid;
+            border-radius: 50%;
+        }
+
+        .login .btn {
+            font-weight: lighter
+        }
+
+        .login .forgot-pass {
+            text-align: center;
+            width: 100%;
+            display: inline-block;
+        }
+
+        .login .forgot-pass:hover {
+            text-decoration: underline;
+        }
+
+        .login .forgot-pass i {
+            float: none;
+            font-size: 12px;
+            padding: 0;
+            border: 0;
+        }
+
+        .panel-heading {
+            position: relative;
+        }
+
+        .radio-inline {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        label {
+            display: unset !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="account-pages"></div>
+    <div class="main">
+        <div class="wrapper">
+            <div class="login-wrap">
+                <div class="panel-heading">
+                    <h4 class="text-center login-logo"></h4>
+                    <h5 class="logo-motto text-center">Gübre Takip Sistemi</h5>
+                </div>
+                <div class="p-20">
+                    <div class="form-horizontal m-t-20">
+
+                        <div id="divRolSec" style="padding: 20px; display: none;">
+                            <div class="alert alert-success">
+                                Sistemde tanımlı birden fazla hesabınız bulunmaktadır. Lütfen hangi rol ile devam
+                                edeceğinizi seçiniz.
+                            </div>
+                            <!-- <div class="row radio-inline">
+                                <div class="radio radio-primary offset-md-1">
+                                    <input checked="true" id="16894" name="SelectedAccount" type="radio" value="16894">
+                                    <label for="16894"><b>DUYGU GÜBRE TEST ÜRETİCİSİ A.Ş </b>(44444444444 - Sıvı/Toz
+                                        Ürün Yönetici - BelgeNo: - Yavuz Selim Mahallesi, Ptt Cad. No:12, 06760
+                                        Çubuk/Ankara - DUYGU GUBRE TEST URETICISI A.S URETIM MERKEZI)</label>
+
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <div id="divGiris">
+
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <i class="icon-user"></i>
+                                    <input autofocus="autofocus" class="form-control" id="UserName" name="UserName"
+                                        placeholder="TC Kimlik No" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <i class="icon-lock"></i>
+                                    <input class="form-control" id="Password" name="Password" placeholder="Şifreniz"
+                                        type="password">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="toastHata" class="alert alert-danger toastHata" role="alert"
+                                    style="margin-top: 10px; display: none">
+
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <div class="col-12">
+                                    <button id="btnGiris"
+                                        class="login-btn btn btn-block btn-lg btn-primary btn-rounded text-uppercase waves-effect waves-light"
+                                        type="submit">
+                                        GİRİŞ
+                                    </button>
+                                </div>
+                            </div>
+                            <hr style="border:1px solid #ddd;margin-top:50px" />
+                            <div class="col-md-12">
+                                <h1 class="text-center" id="pWarn"
+                                    style="border: 1px solid #AAA;border-radius: 7px;padding: 10px;">0 850
+                                    310 8008<br /><span style="font-size:17px;">yardim.masasi@dstrace.com</span></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- You can also require other files to run in this process -->
+    <script src="../renderer.js"></script>
+    <script>
+        var latLong;
+        $.getJSON("http://ipinfo.io", function (ipinfo) {
+            console.log("Found location [" + ipinfo.loc + "] by ipinfo.io");
+            latLong = ipinfo.loc.split(",");
+        });
+        console.log(latLong);
+
+    </script>
+    <script>
+
+
+        window.onkeydown = function (e) {
+            if (e.which == "13") {
+                $("#btnGiris").click();
+            }
+        };
+
+
+        $("#btnGiris").on("click", function () {
+            console.log("");
+            var userName = $("#UserName").val();
+            var password = $("#Password").val();
+            getToken(userName, password).then(res => {
+                console.log(res);
+                if (res.error != undefined) {
+                    //alert(res.error_description);
+                    $(".toastHata").html(res.error_description);
+                    $(".toastHata").show();
+                    setTimeout(() => {
+                        $(".toastHata").hide();
+                    }, 5000);
+                    $("#UserName").val("");
+                    $("#Password").val("");
+                }
+                else {
+                    GetAlternativeUsers(res.userName);
+                }
+            });
+        });
+
+        function devamEtRolSecim() {
+            var selectedUserId = $("input[name='SelectedAccount']:checked").val();
+            var data = "userId=" + selectedUserId + "&grant_type=password";
+
+            fetch(urls.tokenUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-url-encoded' },
+                body: data
+            }).then(res => res.json())
+                .then(response => {
+                    require('electron').remote.getGlobal('sharedObject').tokenModel = response;
+                    // location.href = "../Liquid/CreatePacketWPalette.html";
+                    location.href = "../Shared/Menu.html";
+                    //return response;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function GetAlternativeUsers(userName) {
+            var data = { UserName: userName };
+            postApi('/LoginSelection/GetLoginAlternativeUsers', data).then(response => {
+                console.log(response);
+                debugger;
+                var sayac = 0;
+                for (var i_ = 0; i_ < response.Data.length; i_++) {
+                    if (response.Data[i_].UserRoleCode == 9) {
+                        sayac++;
+                    }
+                }
+                if (sayac > 0) {
+                    terminalConfigKayit();
+                    if (sayac == 1) {
+                        //tek kullanıcı ile giriş yap
+                        var data = "userId=" + response.Data[0].UserId + "&grant_type=password";
+                        fetch(urls.tokenUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-url-encoded' },
+                            body: data
+                        }).then(res => res.json())
+                            .then(response => {
+                                require('electron').remote.getGlobal('sharedObject').tokenModel = response;
+                                // location.href = "../Liquid/CreatePacketWPalette.html";
+                                location.href = "../Shared/Menu.html";
+                                //return response;
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+                    else {
+                        $("#divRolSec").show();
+                        $("#divGiris").hide();
+                        var sayac_ = 0;
+                        for (var i_ = 0; i_ < response.Data.length; i_++) {
+                            if (response.Data[i_].UserRoleCode == 9) {
+                                sayac_++;
+                                $("#divRolSec").append("<div class=\"row radio-inline\"><div class=\"radio radio-primary col-md-12\"><input " + (sayac_ == 1 ? "checked" : "") + " id=\"" + response.Data[i_].UserId + "\" name=\"SelectedAccount\" type=\"radio\" value=\"" + response.Data[i_].UserId + "\"><label for=\"" + response.Data[i_].UserId + "\"><b>" + response.Data[i_].PlaceName + "</b> (" + response.Data[i_].UserLoginName + " - " + response.Data[i_].UserRoleName + " - " + response.Data[i_].Address + " - " + response.Data[i_].ChildPlaceName + ")</label></div></div>");
+                            }
+                        }
+                        $("#divRolSec").append('<div class="form-group text-center" style="margin-top:30px;"> <div class="row col-md-12"><div class="col-md-6"><button id="btnDevamEt" class="login-btn btn btn-block btn-lg btn-success btn-rounded text-uppercase waves-effect waves-light" onclick="backLogin();">GERİ</button></div><div class="col-md-6"><button id="btnDevamEt" class="login-btn btn btn-block btn-lg btn-primary btn-rounded text-uppercase waves-effect waves-light" onclick="devamEtRolSecim();">DEVAM ET</button></div></div> </div>');
+
+                    }
+                } else {
+                    $(".toastHata").html("Giriş yapan T.C. Kimlik numarasına tanımlı 'Sıvı / Toz Ürün Yönetici' rolü bulunmamaktadır.");
+                    $(".toastHata").show();
+                    setTimeout(() => {
+                        $(".toastHata").hide();
+                    }, 5000);
+                    $("#UserName").val("");
+                    $("#Password").val("");
+                }
+                //location.href = "../Liquid/CreatePacketWPalette.html";
+            });
+        }
+
+        function backLogin() {
+            $("#UserName").val("");
+            $("#Password").val("");
+            $("#divRolSec").html('<div class="alert alert-success">Sistemde tanımlı birden fazla hesabınız bulunmaktadır. Lütfen hangi rol ile devam edeceğinizi seçiniz. </div>');
+            $("#divRolSec").hide();
+            $("#divGiris").show();
+        }
+
+
+        function terminalConfigKayit() {
+            var terminalConfigModel = {
+                FactoryId: require('electron').remote.getGlobal('sharedObject').tokenModel.childPlaceId,
+                FactoryName: require('electron').remote.getGlobal('sharedObject').tokenModel.ChildPlaceName,
+                MacAddr: macAdrr,
+                IPAddr: ipAddr,
+                SuperVisorId: require('electron').remote.getGlobal('sharedObject').tokenModel.id,
+                NodeId: 6,
+                xBaseApiUrl: require('electron').remote.getGlobal('sharedUrl').apiUrl,
+                Status: 0,
+                SenderIP: ipAddr,
+                Latitude: latLong[0],
+                Longitude: latLong[1],
+                MacType: "C",
+                ProductionLineId: 202,
+                ProductionLineName: "C TIPI URUN SANAL BANDI"
+            };
+
+
+            postApi('/Operation/CreateTerminalConnfig', terminalConfigModel).then(response => {
+                console.log(response);
+            });
+
+        }
+
+    </script>
+</body>
+
+</html>
