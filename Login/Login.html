@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <script>require('popper.js');</script>
     <script>require('bootstrap');</script>
+
     <style>
         html,
         body {
@@ -222,6 +223,10 @@
                                 <h1 class="text-center" id="pWarn"
                                     style="border: 1px solid #AAA;border-radius: 7px;padding: 10px;">0 850
                                     310 8008<br /><span style="font-size:17px;">yardim.masasi@dstrace.com</span></h1>
+                                <br />
+                                <h5 class="text-center">
+                                    <p id="version"></p>
+                                    </h1>
                             </div>
                         </div>
                     </div>
@@ -231,6 +236,18 @@
     </div>
     <!-- You can also require other files to run in this process -->
     <script src="../renderer.js"></script>
+    <script>
+        const { ipcRenderer } = require('electron');
+        const version = $('#version');
+
+        ipcRenderer.send('app_version');
+        ipcRenderer.on('app_version', (event, arg) => {
+            ipcRenderer.removeAllListeners('app_version');
+            console.log(arg.version);
+            //version.innerText = 'Version ' + arg.version;
+            $(version).html(arg.version);
+        });
+    </script>
     <script>
         var latLong;
         $.getJSON("http://ipinfo.io", function (ipinfo) {

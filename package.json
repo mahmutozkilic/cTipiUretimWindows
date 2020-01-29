@@ -4,7 +4,8 @@
   "description": "gts-c-tipi-uretim",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder build --win --publish never"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -17,15 +18,19 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^6.0.7",
+    "electron": "^6.1.7",
+    "electron-builder": "^22.3.2",
     "electron-packager": "^14.0.6",
     "electron-winstaller": "^4.0.0"
   },
   "dependencies": {
+    "and": "0.0.3",
     "async": "^3.1.0",
     "async-series": "0.0.1",
     "bootstrap": "^4.3.1",
+    "build": "^0.1.4",
     "electron-json-config": "^1.5.3",
+    "electron-updater": "^4.2.0",
     "fibers": "^4.0.1",
     "form-data": "^2.5.1",
     "gulp": "^4.0.2",
