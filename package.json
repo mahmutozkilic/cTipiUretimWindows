@@ -1,6 +1,6 @@
 {
   "name": "gts-uretim",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "gts-c-tipi-uretim",
   "main": "main.js",
   "scripts": {
@@ -36,7 +36,9 @@
     "async-series": "0.0.1",
     "bootstrap": "^4.3.1",
     "build": "^0.1.4",
+    "electron-is-dev": "^1.1.0",
     "electron-json-config": "^1.5.3",
+    "electron-log": "^4.0.4",
     "electron-updater": "^4.2.0",
     "fibers": "^4.0.1",
     "form-data": "^2.5.1",

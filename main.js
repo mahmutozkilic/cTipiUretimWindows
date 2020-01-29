@@ -2,7 +2,39 @@
 const { app, BrowserWindow, dialog, session, ipcMain } = require('electron')
 const path = require('path')
 const { autoUpdater } = require('electron-updater');
+const isDev = require('electron-is-dev');
 
+//setup logger
+autoUpdater.logger = require('electron-log');
+autoUpdater.logger.transports.file.level = 'info';
+
+//setup updater events
+autoUpdater.on('checking-for-update',() => {
+    console.log("güncelleme kontrol ediliyor");
+});
+
+autoUpdater.on('update-available',(info) => {
+    console.log("güncelleme bulundu");
+    console.log("versiyon", info.version);
+    console.log("release tarihi", info.releaseDate);
+});
+
+autoUpdater.on('update-not-available',()=>{
+    console.log("güncelleme bulunamadı.");
+});
+
+autoUpdater.on('download-progress',(progress) => {
+    console.log(`Islem ${Math.floor(progress.percent)}`);
+});
+
+autoUpdater.on('update-downloaded',(info)=> {
+    console.log("güncelleme indirildi");
+    autoUpdater.quitAndInstall();
+});
+
+autoUpdater.on('error',(error) => {
+    console.log(error);
+});
 
 global.sharedObject = {
     tokenModel: null
@@ -59,8 +91,10 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+    if(!isDev){
+        autoUpdater.checkForUpdates();
+    }
     createWindow();
-    autoUpdater.checkForUpdatesAndNotify();
 });
 
 // Quit when all windows are closed.
@@ -80,16 +114,4 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 ipcMain.on('app_version', (event) => {
     event.sender.send('app_version', { version: app.getVersion() });
-});
-
-autoUpdater.on('update-available', () => {
-    mainWindow.webContents.send('update_available');
-});
-
-autoUpdater.on('update-downloaded', () => {
-    mainWindow.webContents.send('update_downloaded');
-});
-
-ipcMain.on('restart_app', () => {
-    autoUpdater.quitAndInstall();
 });
