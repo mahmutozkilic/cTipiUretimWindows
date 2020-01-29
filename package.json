@@ -5,9 +5,13 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder build --win --publish never"
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mahmutozkilic/cTipiUretimWindows.git"
+  },
   "keywords": [
     "Electron",
     "quick",
@@ -22,6 +26,9 @@
     "electron-builder": "^22.3.2",
     "electron-packager": "^14.0.6",
     "electron-winstaller": "^4.0.0"
+  },
+  "build": {
+    "appId": "cTipiUretimWindows"
   },
   "dependencies": {
     "and": "0.0.3",
