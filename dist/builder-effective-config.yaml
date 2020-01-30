@@ -1,5 +1,0 @@
-directories:
-  output: dist
-  buildResources: build
-appId: cTipiUretimWindows
-electronVersion: 6.1.7

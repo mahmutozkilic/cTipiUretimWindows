@@ -1,2 +1,4 @@
 node_modules
 /dist
+azure-pipelines.yml
+electron-builder.yml
