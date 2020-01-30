@@ -61,10 +61,10 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 800,
-        frame: true,
-        fullscreen: false,
-        alwaysOnTop: false,
-        movable: true,
+        frame: false,
+        fullscreen: true,
+        alwaysOnTop: true,
+        movable: false,
         icon: "../Content/img/logo.png",
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
