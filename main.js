@@ -14,6 +14,7 @@ autoUpdater.on('checking-for-update',() => {
 });
 
 autoUpdater.on('update-available',(info) => {
+    mainWindow.webContents.send('update_available');
     console.log("güncelleme bulundu");
     console.log("versiyon", info.version);
     console.log("release tarihi", info.releaseDate);
@@ -24,6 +25,7 @@ autoUpdater.on('update-not-available',()=>{
 });
 
 autoUpdater.on('download-progress',(progress) => {
+    mainWindow.webContents.send('download-progress');
     console.log(`Islem ${Math.floor(progress.percent)}`);
 });
 
