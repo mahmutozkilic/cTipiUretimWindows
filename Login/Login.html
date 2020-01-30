@@ -258,6 +258,33 @@
             Restart
         </button>
     </div>
+
+    <div class="modal fade" id="updateModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                </div>
+                <div class="modal-body">
+                    <div class="thank-you-pop text-center">
+                        <img style="max-width: 150px;" src="../Content/img/downloadLogo.png" alt="">
+                        <hr>
+                        <h5 id="kayitMesaj"> Yeni güncelleme mevcut. <br /> İndirme işlemi başlatıldı... <br /> İndirme
+                            işlemi tamamlandığında uygulama yeniden başlatılacak.</h5><br /><br />
+                        <hr>
+                        <h2>Lütfen bekleyiniz...</h2>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" onclick="continuousProduction()" class="btn btn-primary">Üretime Devam
+                        Et</button>
+                    <button type="button" onclick="restartPage()" class="btn btn-secondary" data-dismiss="modal">Yeni
+                        Üretim</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- You can also require other files to run in this process -->
     <script src="../renderer.js"></script>
     <script>
@@ -272,13 +299,20 @@
             $(version).html(arg.version);
         });
 
-
         const notification = document.getElementById('notification');
         const message = document.getElementById('message');
         const restartButton = document.getElementById('restart-button');
+
+
+
         ipcRenderer.on('update_available', () => {
             ipcRenderer.removeAllListeners('update_available');
             console.log('Yeni güncelleme var!');
+            $("#btnGiris").attr("disabled", "disabled");
+            $('#updateModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
         });
 
         ipcRenderer.on('download-progress', () => {
