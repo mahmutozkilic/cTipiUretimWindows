@@ -9,32 +9,32 @@ autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
 
 //setup updater events
-autoUpdater.on('checking-for-update',() => {
+autoUpdater.on('checking-for-update', () => {
     console.log("güncelleme kontrol ediliyor");
 });
 
-autoUpdater.on('update-available',(info) => {
+autoUpdater.on('update-available', (info) => {
     mainWindow.webContents.send('update_available');
     console.log("güncelleme bulundu");
     console.log("versiyon", info.version);
     console.log("release tarihi", info.releaseDate);
 });
 
-autoUpdater.on('update-not-available',()=>{
+autoUpdater.on('update-not-available', () => {
     console.log("güncelleme bulunamadı.");
 });
 
-autoUpdater.on('download-progress',(progress) => {
+autoUpdater.on('download-progress', (progress) => {
     mainWindow.webContents.send('download-progress');
     console.log(`Islem ${Math.floor(progress.percent)}`);
 });
 
-autoUpdater.on('update-downloaded',(info)=> {
+autoUpdater.on('update-downloaded', (info) => {
     console.log("güncelleme indirildi");
     autoUpdater.quitAndInstall();
 });
 
-autoUpdater.on('error',(error) => {
+autoUpdater.on('error', (error) => {
     console.log(error);
 });
 
@@ -49,6 +49,8 @@ global.sharedUrl = {
     // apiUrl: "http://testapi.dstrace.com:90/api"
     // tokenUrl: "http://localhost:2239/token",
     // apiUrl: "http://localhost:2239/api"
+    //tokenUrl: "http://95.0.67.9:50090/token",
+    //apiUrl: "http://95.0.67.9:50090/api"
 }
 
 
@@ -93,7 +95,7 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-    if(!isDev){
+    if (!isDev) {
         autoUpdater.checkForUpdates();
     }
     createWindow();

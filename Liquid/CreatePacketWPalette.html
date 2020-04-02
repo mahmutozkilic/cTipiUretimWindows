@@ -369,7 +369,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
-                    <button type="button" onclick="saveSubmit();" class="btn btn-primary">Kaydet</button>
+                    <button type="button" onclick="saveSubmit();" id="btnEndSave" class="btn btn-primary">Kaydet</button>
                 </div>
             </div>
         </div>
@@ -512,6 +512,9 @@
         }
 
         function saveSubmit() {
+            $("#btnEndSave").attr("disabled","disabled");
+            $("#btnEndSave").hide();
+
             try {
                 $("#saveComfirm").modal('hide');
             } catch (e) {
@@ -531,6 +534,7 @@
                         $("#hataMesaj").html(res.Message);
                         $("#errorModal").modal();
                     }
+                    $("#btnEndSave").removeAttr("disabled");
                 });
             }
             else {
@@ -546,38 +550,8 @@
                         $("#hataMesaj").html(res.Message);
                         $("#errorModal").modal();
                     }
+                    $("#btnEndSave").removeAttr("disabled");
                 });
-            }
-            //General.StartLoading();
-            // console.log("model", model);
-            // var urlApi = location.origin + "/Liquid/JsonCreatePacketWithPallet";
-            // getAjaxByModel(
-            //     ajaxType.POST,
-            //     { model: model },
-            //     urlApi,
-            //     ajaxDataType.JSON,
-            //     ajaxAsync.TRUE,
-            //     ajaxShowProgress.FALSE,
-            //     CreatePacketSubmitCallBack
-            // );
-        }
-
-        function CreatePacketSubmitCallBack(jsonResponse) {
-            //General.StopLoading();
-            try {
-                $("#saveComfirm").modal('hide');
-            } catch (e) {
-                console.log(e);
-            }
-            console.log(jsonResponse);
-            if (jsonResponse.IsSuccess) {
-                //toastr.success("BAŞARILI! Üretim tamamlandı.");
-                $("#saveBtn").hide();
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            } else {
-                //toastr.error(jsonResponse.Message);
             }
         }
 

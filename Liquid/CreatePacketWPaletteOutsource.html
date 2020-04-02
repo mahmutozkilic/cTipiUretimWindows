@@ -524,6 +524,9 @@
         }
 
         function saveSubmit() {
+            $("#btnEndSave").attr("disabled","disabled");
+            $("#btnEndSave").hide();
+
             try {
                 $("#saveComfirm").modal('hide');
             } catch (e) {
@@ -543,6 +546,9 @@
                         $("#hataMesaj").html(res.Message);
                         $("#errorModal").modal();
                     }
+                    $("#btnEndSave").removeAttr("disabled");
+                    $("#btnEndSave").show();
+
                 });
             }
             else {
@@ -558,38 +564,10 @@
                         $("#hataMesaj").html(res.Message);
                         $("#errorModal").modal();
                     }
-                });
-            }
-            //General.StartLoading();
-            // console.log("model", model);
-            // var urlApi = location.origin + "/Liquid/JsonCreatePacketWithPallet";
-            // getAjaxByModel(
-            //     ajaxType.POST,
-            //     { model: model },
-            //     urlApi,
-            //     ajaxDataType.JSON,
-            //     ajaxAsync.TRUE,
-            //     ajaxShowProgress.FALSE,
-            //     CreatePacketSubmitCallBack
-            // );
-        }
+                    $("#btnEndSave").removeAttr("disabled");
+                    $("#btnEndSave").show();
 
-        function CreatePacketSubmitCallBack(jsonResponse) {
-            //General.StopLoading();
-            try {
-                $("#saveComfirm").modal('hide');
-            } catch (e) {
-                console.log(e);
-            }
-            console.log(jsonResponse);
-            if (jsonResponse.IsSuccess) {
-                //toastr.success("BAŞARILI! Üretim tamamlandı.");
-                $("#saveBtn").hide();
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            } else {
-                //toastr.error(jsonResponse.Message);
+                });
             }
         }
 
