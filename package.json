@@ -44,7 +44,7 @@
     "form-data": "^2.5.1",
     "gulp": "^4.0.2",
     "is-online": "^8.2.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "macaddress": "^0.2.9",
     "node-fetch": "^2.6.0",
     "node-notifier": "^5.4.3",
